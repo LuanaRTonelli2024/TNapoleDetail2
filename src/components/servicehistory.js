@@ -1,4 +1,4 @@
-// src/components/ServiceHistory.js
+// src/components/servicehistory.js
 import React, { useEffect, useState } from 'react';
 import { auth, database } from '../firebase';
 import { ref, onValue } from 'firebase/database';

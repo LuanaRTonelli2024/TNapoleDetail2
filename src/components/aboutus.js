@@ -1,3 +1,4 @@
+// src/components/aboutus.js
 import React from 'react';
 import './globalstyles.css';
 import './aboutus.css';

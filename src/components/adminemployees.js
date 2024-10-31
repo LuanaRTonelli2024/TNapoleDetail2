@@ -18,6 +18,7 @@ const AdminEmployees = () => {
     const [isActive, setIsActive] = useState(true);
     const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
+    const [isAdding, setIsAdding] = useState(false);
     const database = getDatabase();
 
     useEffect(() => {
@@ -78,6 +79,37 @@ const AdminEmployees = () => {
         }
     };
 
+    const handleAddEmployee = async (e) => {
+        e.preventDefault();
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, 'defaultPassword123');
+            const uid = userCredential.user.uid;
+
+            await set(ref(database, 'employees/' + uid), {
+                name: fullName,
+                address,
+                postalCode,
+                city,
+                phone,
+                mobile,
+                email,
+                role,
+                isActive,
+            });
+
+            await set(ref(database, 'users/' + uid), {
+                email,
+                role,
+                isActive,
+            });
+
+            resetForm();
+        } catch (error) {
+            console.error('Error adding employee:', error);
+        }
+    };
+
     const resetForm = () => {
         setFullName('');
         setAddress('');
@@ -90,6 +122,7 @@ const AdminEmployees = () => {
         setIsActive(true);
         setSelectedEmployeeId(null);
         setIsEditing(false);
+        setIsAdding(false);
     };
 
     const handleStartEditing = (employee) => {
@@ -105,6 +138,7 @@ const AdminEmployees = () => {
         setIsActive(employee.isActive);
         setIsEditing(true);
     };
+
     const toggleEmployeeDetails = (employeeId) => {
         if (selectedEmployeeId === employeeId) {
             setSelectedEmployeeId(null);
@@ -117,6 +151,79 @@ const AdminEmployees = () => {
     return (
         <div>
             <h2>Employees Management</h2>
+            <button onClick={() => { setIsAdding(true); resetForm(); }} className="btn btn-add">New Employee</button>
+
+            {isAdding && (
+                <form onSubmit={handleAddEmployee}>
+                    <input 
+                        type="text" 
+                        placeholder="Full Name"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        required
+                    />
+                    <input 
+                        type="text" 
+                        placeholder="Address"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        required
+                    />
+                    <input 
+                        type="text" 
+                        placeholder="Postal Code"
+                        value={postalCode}
+                        onChange={(e) => setPostalCode(e.target.value)}
+                        required
+                    />
+                    <input 
+                        type="text" 
+                        placeholder="City"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        required
+                    />
+                    <input 
+                        type="text" 
+                        placeholder="Phone"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        required
+                    />
+                    <input 
+                        type="text" 
+                        placeholder="Mobile"
+                        value={mobile}
+                        onChange={(e) => setMobile(e.target.value)}
+                        required
+                    />
+                    <input 
+                        type="email" 
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                    <input 
+                        type="text" 
+                        placeholder="Role"
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
+                        required
+                    />
+                    <label>
+                        <strong>Active:</strong>
+                        <input 
+                            type="checkbox" 
+                            checked={isActive}
+                            onChange={(e) => setIsActive(e.target.checked)}
+                        />
+                    </label>
+                    <button type="submit" className="btn btn-save">Add Employee</button>
+                    <button type="button" onClick={() => { resetForm(); setIsAdding(false); }} className="btn btn-cancel">Cancel</button>
+                </form>
+            )}
+
             <ul className="employee-list">
                 {employees.map((employee) => (
                     <li key={employee.id}>

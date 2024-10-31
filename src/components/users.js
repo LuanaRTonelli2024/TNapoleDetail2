@@ -1,3 +1,4 @@
+// src/components/users.js
 import { auth, firestore } from './firebase';
 
 const registerUser = async (email, password, name, role) => {

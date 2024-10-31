@@ -1,3 +1,4 @@
+// src/components/bookingsettings.js
 import React, { useEffect, useState } from 'react';
 import { getDatabase, ref, set, remove, onValue } from 'firebase/database';
 import { database } from '../firebase';

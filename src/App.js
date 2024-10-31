@@ -18,7 +18,6 @@ import ChangePassword from "./components/changepassword";
 import BookingSettings from "./components/bookingsettings";
 import AdminDashboard from "./components/admindashboard";
 import AdminCustomers from "./components/admincustomers";
-import AdminLogin from "./components/adminlogin";
 import AdminEmployees from "./components/adminemployees";
 
 const App = () => {
@@ -41,7 +40,6 @@ const App = () => {
         <Route path="/booksettings" element={<BookingSettings />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
         <Route path="/admincustomers" element={<AdminCustomers />} />
-        <Route path="/adminlogin" element={<AdminLogin />} />
         <Route path="/adminemployees" element={<AdminEmployees />} /> 
       </Routes>
     </Router>

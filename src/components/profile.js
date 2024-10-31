@@ -1,3 +1,4 @@
+// src/components/profile.js
 import React, { useEffect, useState } from 'react';
 import { auth, database } from '../firebase'; // Import Firebase auth and database
 import { ref, onValue } from 'firebase/database'; // Import necessary methods

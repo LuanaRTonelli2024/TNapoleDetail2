@@ -1,0 +1,65 @@
+/* src/components/signup.css */
+
+.signup.page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f9f9f9;
+}
+
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Garante que ocupe toda a largura disponível */
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* Garante que os elementos ocupem toda a largura */
+    background-color: #fff;
+    padding: 30px; /* Aumenta o padding para dar mais espaço interno */
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombras mais pronunciadas para um efeito de profundidade */
+    width: 100%;
+    max-width: 400px; /* Limita a largura máxima do formulário */
+    margin-top: 90px;
+}
+
+.signup-form input {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 15px; /* Aumenta o espaço entre os campos */
+    transition: border-color 0.3s, box-shadow 0.3s; /* Transições suaves para interação */
+}
+
+.signup-form input:focus {
+    border-color: #007bff; /* Muda a borda para azul quando em foco */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Adiciona sombra quando em foco */
+    outline: none; /* Remove o contorno padrão do navegador */
+}
+
+.signup-form button {
+    background-color: #007bff; /* Cor do botão */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Transição suave para a cor de fundo */
+}
+
+.signup-form button:hover {
+    background-color: #0056b3; /* Cor do botão ao passar o mouse */
+}
+
+.signup-form p {
+    margin-top: 15px;
+    text-align: center; /* Centraliza o texto */
+    color: #555; /* Cor mais suave para o texto */
+}
+

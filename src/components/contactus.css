@@ -1,0 +1,74 @@
+.contact-page {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente todo o conteúdo */
+    padding: 20px;
+    background-color: #f9f9f9; /* Cor de fundo suave */
+    flex-direction: column; /* Alinha os itens em coluna */
+    align-items: center; /* Centraliza os itens na linha */
+}
+
+h2 {
+    text-align: center; /* Centraliza o título */
+    margin-bottom: 20px; /* Espaço abaixo do título */
+}
+
+.contact-container {
+    display: flex; /* Flexbox para alinhar informações de contato e formulário */
+    width: 100%; /* Largura total do contêiner */
+    max-width: 1200px; /* Largura máxima para manter o conteúdo centralizado */
+}
+
+.company-info {
+    flex: 1; /* Permite que a empresa ocupe uma fração do espaço */
+    margin-right: 20px; /* Espaço entre a empresa e o formulário */
+    padding: 20px;
+}
+
+.contact-form {
+    flex: 2; /* O formulário ocupa o dobro do espaço da empresa */
+    padding: 20px;
+
+}
+
+.line {
+    width: 1px; /* Largura da linha vertical */
+    background-color: #ccc; /* Cor da linha */
+    margin: 0 20px; /* Espaçamento horizontal da linha */
+}
+
+.contact-form div {
+    margin-bottom: 15px; /* Espaçamento entre os campos do formulário */
+}
+
+.contact-form label {
+    display: block; /* Faz o label ocupar a largura total */
+    margin-bottom: 5px; /* Espaçamento abaixo do label */
+}
+
+.contact-form input, 
+.contact-form textarea {
+    width: 100%; /* Faz os campos ocupar toda a largura */
+    padding: 10px; /* Espaçamento interno */
+    border: 1px solid #ccc; /* Borda leve */
+    border-radius: 4px; /* Bordas arredondadas */
+}
+
+.contact-form button {
+    background-color: #d3a42e; /* Cor do botão */
+    color: white; /* Texto branco */
+    padding: 10px 15px; /* Espaçamento interno do botão */
+    border: none; /* Sem borda */
+    border-radius: 4px; /* Bordas arredondadas */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+.contact-form button:hover {
+    background-color: #d3a42e; /* Cor do botão ao passar o mouse */
+}
+
+.success-message {
+    margin-top: 20px;  /* Espaçamento acima da mensagem */
+    color: green;      /* Cor verde para indicar sucesso */
+    font-weight: bold; /* Texto em negrito */
+}
+

@@ -1,0 +1,107 @@
+/* src/components/globalstyles.css */
+
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+}
+
+/* Header */
+.header {
+  background-color: #1c1b1b;
+  padding: 0px 10px; /* Aumentado para mais espaçamento */
+  position: fixed; 
+  width: 100%; 
+  z-index: 1000;
+}
+
+.header .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header .logo img {
+  height: 40px;
+  margin-left: 7px;
+}
+
+.header nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.header nav ul li {
+  margin: 0 15px; /* Ajustado para espaço mais uniforme */
+}
+
+.header nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  transition: color 0.3s ease; /* Transição suave para hover */
+}
+
+nav ul li a:hover {
+  color: #d3a42e;
+  border-bottom: 2px solid #d3a42e;
+}
+
+/* Buttons */
+.btn-login {
+  background-color: #d3a42e;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s ease; /* Transição suave para hover */
+  margin-right: 10px;
+}
+
+.btn-login:hover {
+  background-color: #b89f2d; /* Cor levemente mais escura para hover */
+}
+
+.btn-reservation {
+  background-color: #d3a42e;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease; /* Transição suave para hover */
+}
+
+.btn-reservation:hover {
+  background-color: #b89f2d; /* Cor levemente mais escura para hover */
+}
+
+/* Media Queries para responsividade */
+@media (max-width: 768px) {
+  .navbar {
+      flex-direction: column; /* Muda para coluna em telas menores */
+      align-items: flex-start; /* Alinha à esquerda */
+  }
+
+  nav ul {
+      flex-direction: column; /* Muda a lista para coluna */
+      align-items: flex-start; /* Alinha à esquerda */
+  }
+
+  nav ul li {
+      margin: 5px 0; /* Ajusta margem para coluna */
+  }
+}

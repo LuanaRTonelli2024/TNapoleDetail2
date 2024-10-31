@@ -1,0 +1,57 @@
+
+.services-section {
+    padding: 50px;
+    text-align: center;
+    background-color: #fff;
+  }
+  
+.services-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #0f2036;
+  }
+  
+.services-grid {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+.service-card {
+    position: relative;
+    overflow: hidden;
+    width: 30%; /* Ajuste conforme necessário */
+  }
+  
+.service-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro com transparência */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+.service-card:hover .overlay {
+    opacity: 1;
+  }
+  
+.btn-overlay {
+    margin-top: 10px;
+    background-color: #ffcc00;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+  }

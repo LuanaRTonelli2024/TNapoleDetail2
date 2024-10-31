@@ -1,0 +1,40 @@
+/* src/components/booking.css */
+.booking-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.calendar-time-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px;
+}
+
+.time-selection {
+    margin-left: 20px;
+}
+
+.time-buttons {
+    display: flex;
+    flex-direction: column;
+}
+
+.time-button {
+    margin: 5px 0;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.time-button.selected {
+    background-color: #0056b3;
+}
+
+.time-button:hover {
+    opacity: 0.8;
+}

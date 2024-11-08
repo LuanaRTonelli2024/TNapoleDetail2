@@ -17,6 +17,8 @@ const Signup = () => {
     const [mobile, setMobile] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [role, setRole] = useState('customer');
+    const [isActive, setIsActive] = useState(true);
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
@@ -27,7 +29,7 @@ const Signup = () => {
             const user = userCredential.user;
 
             await set(ref(database, 'customers/' + user.uid), {
-                fullName,
+                name: fullName,
                 address,
                 postalCode,
                 city,
@@ -35,12 +37,13 @@ const Signup = () => {
                 mobile,
                 email,
                 role: 'customer',
+                isActive,
             });
 
-            // Adiciona o novo usuário na tabela users
             await set(ref(database, 'users/' + user.uid), {
                 email,
                 role: 'customer',
+                isActive,
             });
 
             navigate('/Login'); 
@@ -52,78 +55,90 @@ const Signup = () => {
 
     return (
         <div className="signup-page">
-            <header className="header">
-                <div className="logo">
-                    <img src={logo} alt="TNapoleDetail" />
-                </div>
-            </header>
-            <div className="signup-container">
-                <h2>Sign Up</h2>
-                {error && <p className="error-message">{error}</p>}
-                <form onSubmit={handleSignup} className="signup-form">
-                    <input
-                        type="text"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                        placeholder="Full Name"
-                        required
-                    />
-                    <input
-                        type="text"
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                        placeholder="Address"
-                        required
-                    />
-                    <input
-                        type="text"
-                        value={postalCode}
-                        onChange={(e) => setPostalCode(e.target.value)}
-                        placeholder="Postal Code (CEP)"
-                        required
-                    />
-                    <input
-                        type="text"
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
-                        placeholder="City"
-                        required
-                    />
-                    <input
-                        type="text"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        placeholder="Phone"
-                        required
-                    />
-                    <input
-                        type="text"
-                        value={mobile}
-                        onChange={(e) => setMobile(e.target.value)}
-                        placeholder="Mobile"
-                        required
-                    />
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Email"
-                        required
-                    />
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Password"
-                        required
-                    />
-                    <button type="submit">Sign Up</button>
-                </form>
-                <p>
-                    Already have an account? <a href="/login">Login here</a>
-                </p>
+        <header className="header">
+            <div className="logo">
+                <img src={logo} alt="TNapoleDetail" />
             </div>
+        </header>
+        
+        <div className="signup-container">
+            <h2>Sign Up</h2>
+            
+            {error && <p className="error-message">{error}</p>}
+            
+            <form onSubmit={handleSignup} className="signup-form">
+                <input
+                    type="text"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder="Full Name"
+                    required
+                    className="form-input"
+                />
+                <input
+                    type="text"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    placeholder="Address"
+                    required
+                    className="form-input"
+                />
+                <input
+                    type="text"
+                    value={postalCode}
+                    onChange={(e) => setPostalCode(e.target.value)}
+                    placeholder="Postal Code (CEP)"
+                    required
+                    className="form-input"
+                />
+                <input
+                    type="text"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    placeholder="City"
+                    required
+                    className="form-input"
+                />
+                <input
+                    type="text"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="Phone"
+                    required
+                    className="form-input"
+                />
+                <input
+                    type="text"
+                    value={mobile}
+                    onChange={(e) => setMobile(e.target.value)}
+                    placeholder="Mobile"
+                    required
+                    className="form-input"
+                />
+                <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Email"
+                    required
+                    className="form-input"
+                />
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
+                    required
+                    className="form-input"
+                />
+                <button type="submit" className="signup-button">Sign Up</button>
+            </form>
+
+            <p className="login-prompt">
+                Already have an account? <a href="/login" className="login-link">Login here</a>
+            </p>
         </div>
+    </div>
     );
 };
 

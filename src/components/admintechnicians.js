@@ -1,12 +1,12 @@
-// src/components/adminemployees.js
+//src/components/admintechnicians.js
 import React, { useEffect, useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { getDatabase, ref, onValue, set, update, remove } from 'firebase/database';
 import { auth, database } from '../firebase';
-import './adminemployees.css';
+import './admintechnicians.css';
 
-const AdminEmployees = () => {
-    const [employees, setEmployees] = useState([]);
+const AdminTechnicians = () => {
+    const [technicians, setTechnicians] = useState([]);
     const [fullName, setFullName] = useState('');
     const [address, setAddress] = useState('');
     const [postalCode, setPostalCode] = useState('');
@@ -14,19 +14,19 @@ const AdminEmployees = () => {
     const [phone, setPhone] = useState('');
     const [mobile, setMobile] = useState('');
     const [email, setEmail] = useState('');
-    const [role, setRole] = useState('employee');
+    const [role, setRole] = useState('detailtechnician');
     const [isActive, setIsActive] = useState(true);
-    const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
+    const [selectedTechnicianId, setSelectedTechnicianId] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [isAdding, setIsAdding] = useState(false);
     const database = getDatabase();
 
     useEffect(() => {
-        const employeesRef = ref(database, 'employees/');
-        const unsubscribe = onValue(employeesRef, (snapshot) => {
+        const techniciansRef = ref(database, 'technicians/');
+        const unsubscribe = onValue(techniciansRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                const employeesArray = Object.keys(data).map(key => ({
+                const techniciansArray = Object.keys(data).map(key => ({
                     id: key,
                     fullName: data[key].name,
                     address: data[key].address,
@@ -38,26 +38,26 @@ const AdminEmployees = () => {
                     role: data[key].role,
                     isActive: data[key].isActive,
                 }));
-                setEmployees(employeesArray);
+                setTechnicians(techniciansArray);
             } else {
-                console.log("No employees found.");
+                console.log("No technicians found.");
             }
         });
 
         return () => unsubscribe();
     }, [database]);
 
-    const handleDelete = (employeeId) => {
-        const employeeRef = ref(database, `employees/${employeeId}`);
-        remove(employeeRef);
+    const handleDelete = (technicianId) => {
+        const technicianRef = ref(database, `technicians/${technicianId}`);
+        remove(technicianRef);
     };
 
-    const handleEditEmployee = async (employeeId) => {
-        if (!employeeId) return;
+    const handleEditTechnician = async (technicianId) => {
+        if (!technicianId) return;
 
         try {
-            const employeeRef = ref(database, `employees/${employeeId}`);
-            await update(employeeRef, {
+            const technicianRef = ref(database, `technicians/${technicianId}`);
+            await update(technicianRef, {
                 name: fullName,
                 address,
                 postalCode,
@@ -67,25 +67,25 @@ const AdminEmployees = () => {
                 isActive,
             });
 
-            const userRef = ref(database, `users/${employeeId}`);
+            const userRef = ref(database, `users/${technicianId}`);
             await update(userRef, {
                 isActive,
             });
 
             resetForm();
         } catch (error) {
-            console.error('Error editing employee:', error);
+            console.error('Error editing technician:', error);
         }
     };
 
-    const handleAddEmployee = async (e) => {
+    const handleAddTechnician = async (e) => {
         e.preventDefault();
 
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, 'defaultPassword123');
             const uid = userCredential.user.uid;
 
-            await set(ref(database, 'employees/' + uid), {
+            await set(ref(database, 'technicians/' + uid), {
                 name: fullName,
                 address,
                 postalCode,
@@ -93,19 +93,19 @@ const AdminEmployees = () => {
                 phone,
                 mobile,
                 email,
-                role: 'employee',
+                role: 'detailtechnician',
                 isActive,
             });
 
             await set(ref(database, 'users/' + uid), {
                 email,
-                role: 'employee',
+                role: 'detailtechnician',
                 isActive,
             });
 
             resetForm();
         } catch (error) {
-            console.error('Error adding employee:', error);
+            console.error('Error adding detail technician:', error);
         }
     };
 
@@ -119,41 +119,41 @@ const AdminEmployees = () => {
         setEmail('');
         setRole('');
         setIsActive(true);
-        setSelectedEmployeeId(null);
+        setSelectedTechnicianId(null);
         setIsEditing(false);
         setIsAdding(true);
     };
 
-    const handleStartEditing = (employee) => {
-        setSelectedEmployeeId(employee.id);
-        setFullName(employee.fullName);
-        setAddress(employee.address);
-        setPostalCode(employee.postalCode);
-        setCity(employee.city);
-        setPhone(employee.phone);
-        setMobile(employee.mobile);
-        setEmail(employee.email);
-        setRole(employee.role);
-        setIsActive(employee.isActive);
+    const handleStartEditing = (technician) => {
+        setSelectedTechnicianId(technician.id);
+        setFullName(technician.fullName);
+        setAddress(technician.address);
+        setPostalCode(technician.postalCode);
+        setCity(technician.city);
+        setPhone(technician.phone);
+        setMobile(technician.mobile);
+        setEmail(technician.email);
+        setRole(technician.role);
+        setIsActive(technician.isActive);
         setIsEditing(true);
     };
 
-    const toggleEmployeeDetails = (employeeId) => {
-        if (selectedEmployeeId === employeeId) {
-            setSelectedEmployeeId(null);
+    const toggleTechnicianDetails = (technicianId) => {
+        if (selectedTechnicianId === technicianId) {
+            setSelectedTechnicianId(null);
         } else {
-            setSelectedEmployeeId(employeeId);
+            setSelectedTechnicianId(technicianId);
         }
         setIsEditing(false);
     };
 
     return (
         <div>
-            <h2>Employees Management</h2>
-            <button onClick={() => { setIsAdding(true); resetForm(); }} className="btn btn-add">New Employee</button>
+            <h2>Detail Technicians Management</h2>
+            <button onClick={() => { setIsAdding(true); resetForm(); }} className="btn btn-add">New Technician</button>
 
             {isAdding && (
-                <form onSubmit={handleAddEmployee}>
+                <form onSubmit={handleAddTechnician}>
                     <input 
                         type="text" 
                         placeholder="Full Name"
@@ -211,24 +211,24 @@ const AdminEmployees = () => {
                             onChange={(e) => setIsActive(e.target.checked)}
                         />
                     </label>
-                    <button type="submit" className="btn btn-save">Add Employee</button>
+                    <button type="submit" className="btn btn-save">Add Detail Technician</button>
                     <button type="button" onClick={() => { resetForm(); setIsAdding(false); }} className="btn btn-cancel">Cancel</button>
                 </form>
             )}
 
-            <ul className="employee-list">
-                {employees.map((employee) => (
-                    <li key={employee.id}>
+            <ul className="technician-list">
+                {technicians.map((technician) => (
+                    <li key={technician.id}>
                         <div 
                             style={{ cursor: 'pointer' }} 
-                            onClick={() => toggleEmployeeDetails(employee.id)}
+                            onClick={() => toggleTechnicianDetails(technician.id)}
                         >
-                            {employee.fullName}
+                            {technician.fullName}
                         </div>
-                        {selectedEmployeeId === employee.id && (
-                            <div className="employee-details">
+                        {selectedTechnicianId === technician.id && (
+                            <div className="technician-details">
                                 <p>
-                                    <strong>Email:</strong> {employee.email}
+                                    <strong>Email:</strong> {technician.email}
                                 </p>
                                 <p>
                                     <strong>Address:</strong> 
@@ -239,7 +239,7 @@ const AdminEmployees = () => {
                                             onChange={(e) => setAddress(e.target.value)}
                                         />
                                     ) : (
-                                        employee.address
+                                        technician.address
                                     )}
                                 </p>
                                 <p>
@@ -251,7 +251,7 @@ const AdminEmployees = () => {
                                             onChange={(e) => setPostalCode(e.target.value)}
                                         />
                                     ) : (
-                                        employee.postalCode
+                                        technician.postalCode
                                     )}
                                 </p>
                                 <p>
@@ -263,7 +263,7 @@ const AdminEmployees = () => {
                                             onChange={(e) => setCity(e.target.value)}
                                         />
                                     ) : (
-                                        employee.city
+                                        technician.city
                                     )}  
                                 </p>
                                 <p>
@@ -275,7 +275,7 @@ const AdminEmployees = () => {
                                             onChange={(e) => setPhone(e.target.value)}
                                         />
                                     ) : (
-                                        employee.phone
+                                        technician.phone
                                     )}
                                 </p>
                                 <p>
@@ -287,7 +287,7 @@ const AdminEmployees = () => {
                                             onChange={(e) => setMobile(e.target.value)}
                                         />
                                     ) : (
-                                        employee.mobile
+                                        technician.mobile
                                     )}
                                 </p>
                                 <p>
@@ -299,18 +299,18 @@ const AdminEmployees = () => {
                                             onChange={(e) => setIsActive(e.target.checked)}
                                         />    
                                     ) : (
-                                        employee.isActive ? 'Yes' : 'No'
+                                        technician.isActive ? 'Yes' : 'No'
                                     )}
                                 </p>
                                 {isEditing ? (
                                     <div>
-                                        <button onClick={() => handleEditEmployee(selectedEmployeeId)} className="btn btn-save">Save</button>
+                                        <button onClick={() => handleEditTechnician(selectedTechnicianId)} className="btn btn-save">Save</button>
                                         <button onClick={resetForm} className="btn btn-cancel">Cancel</button>
                                     </div>
                                 ) : (
-                                    <button onClick={() => handleStartEditing(employee)} className="btn btn-edit">Edit</button>
+                                    <button onClick={() => handleStartEditing(technician)} className="btn btn-edit">Edit</button>
                                 )}
-                                <button onClick={() => handleDelete(employee.id)} className="btn btn-danger">Delete</button>
+                                <button onClick={() => handleDelete(technician.id)} className="btn btn-danger">Delete</button>
                             </div>
                         )}
                     </li>
@@ -320,4 +320,4 @@ const AdminEmployees = () => {
     );
 };
 
-export default AdminEmployees;
+export default AdminTechnicians;

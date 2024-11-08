@@ -1,18 +1,16 @@
-//src/components/admindashboard.js
+//src/components/techniciandashboard.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../images/logo.png';
 import AdminCustomers from './admincustomers';
-import AdminEmployees from './adminemployees';
-import AdminTechnicians from './admintechnicians';
 import Booking from './booking';
 import ServiceHistory from './servicehistory';
 import ChangePassword from './changepassword';
 import './globalstyles.css';
-import './admindashboard.css';
+import './techniciandashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const AdminDashboard = () => {
+const TechnicianDashboard = () => {
     const [activeTab, setActiveTab] = useState('');
     const [welcomeVisible, setWelcomeVisible] = useState(true);
 
@@ -43,12 +41,6 @@ const AdminDashboard = () => {
                             <Link to="#" onClick={() => handleTabClick('admincustomers')}>Customers</Link>
                         </li>
                         <li>
-                            <Link to="#" onClick={() => handleTabClick('adminemployees')}>Employees</Link>
-                        </li>
-                        <li>
-                            <Link to="#" onClick={() => handleTabClick('admintechnicians')}>Technicians</Link>
-                        </li>
-                        <li>
                             <Link to="#" onClick={() => handleTabClick('servicehistory')}>Service History</Link>
                         </li>
                         <li>
@@ -61,8 +53,6 @@ const AdminDashboard = () => {
                         {welcomeVisible && <h2>Welcome, [User's Name]</h2>}
                         {activeTab === 'booking' && <Booking />}
                         {activeTab === 'admincustomers' && <AdminCustomers />}
-                        {activeTab === 'adminemployees' && <AdminEmployees />}
-                        {activeTab === 'admintechnicians' && <AdminTechnicians />}
                         {activeTab === 'servicehistory' && <ServiceHistory />}
                         {activeTab === 'changePassword' && <ChangePassword />}
                     </section>
@@ -75,6 +65,6 @@ const AdminDashboard = () => {
     );
 };
 
-export default AdminDashboard;
+export default TechnicianDashboard;
  
  

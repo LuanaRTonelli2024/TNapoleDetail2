@@ -24,7 +24,7 @@ const Login = () => {
 
             // Verifica o papel do usuário no Realtime Database
             const db = getDatabase();
-            const userRef = ref(database, `customers/${user.uid}`);
+            const userRef = ref(database, `users/${user.uid}`);
             const snapshot = await get(userRef);
 
             if (snapshot.exists()) {
@@ -35,6 +35,8 @@ const Login = () => {
                     navigate('/AdminDashboard'); // Redirecionar para o dashboard de funcionários
                 } else if (userData.role === 'customer') {
                     navigate('/Dashboard'); // Redirecionar para o dashboard de clientes
+                } else if (userData.role === 'detailtechnician') {
+                    navigate('/TechnicianDashboard'); // Redirecionar para o dashboard de teclados
                 } else {
                     alert('Acesso negado. Você não tem permissão para acessar esta área.');
                     await auth.signOut(); // Deslogar se não for um papel válido

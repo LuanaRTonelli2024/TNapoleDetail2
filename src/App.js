@@ -19,6 +19,8 @@ import BookingSettings from "./components/bookingsettings";
 import AdminDashboard from "./components/admindashboard";
 import AdminCustomers from "./components/admincustomers";
 import AdminEmployees from "./components/adminemployees";
+import AdminTechnicians from "./components/admintechnicians";
+import TechnicianDashboard from "./components/techniciandashboard";
 
 const App = () => {
   return (
@@ -40,7 +42,9 @@ const App = () => {
         <Route path="/booksettings" element={<BookingSettings />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
         <Route path="/admincustomers" element={<AdminCustomers />} />
-        <Route path="/adminemployees" element={<AdminEmployees />} /> 
+        <Route path="/adminemployees" element={<AdminEmployees />} />
+        <Route path="/admintechnicians" element={<AdminTechnicians />} />
+        <Route path="/techniciandashboard" element={<TechnicianDashboard />} />
       </Routes>
     </Router>
   );

@@ -1,11 +1,11 @@
-/* src/components/adminemployees.css */
+/* src/components/admintechnicians.css */
 
-.employee-list {
+.technician-list {
     list-style-type: none;
     padding: 0;
 }
 
-.employee-list li {
+.technician-list li {
     margin: 10px 0;
     padding: 10px;
     border: 1px solid #ddd;
@@ -13,11 +13,11 @@
     transition: background-color 0.3s;
 }
 
-.employee-list li:hover {
+.technician-list li:hover {
     background-color: #f0f0f0;
 }
 
-.employee-details {
+.technician-details {
     margin-top: 10px;
     padding: 10px;
     border-top: 1px solid #ddd;

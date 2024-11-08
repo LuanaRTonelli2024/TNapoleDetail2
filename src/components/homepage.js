@@ -41,8 +41,6 @@ const Homepage = () => {
             <Contact />
             <footer>
                 <p>Copyright &copy; 2023 TNapoleDetail. All rights reserved.</p>
-                <Link to="/AdminLogin">Employee's Portal</Link>
-                
             </footer>
         </div>
     );

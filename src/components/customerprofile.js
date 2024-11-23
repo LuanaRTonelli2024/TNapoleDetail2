@@ -1,10 +1,10 @@
-// src/components/profile.js
+// src/components/customerprofile.js
 import React, { useEffect, useState } from 'react';
-import { auth, database } from '../firebase'; // Import Firebase auth and database
-import { ref, onValue } from 'firebase/database'; // Import necessary methods
-import './profile.css';
+import { auth, database } from '../firebase'; 
+import { ref, onValue } from 'firebase/database';
+import './customerprofile.css';
 
-const Profile = () => {
+const CustomerProfile = () => {
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -47,4 +47,4 @@ const Profile = () => {
     );
 };
 
-export default Profile;
+export default CustomerProfile;

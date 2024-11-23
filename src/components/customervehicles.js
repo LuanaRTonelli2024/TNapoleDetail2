@@ -1,10 +1,10 @@
-//src/components/vehicles.js
+//src/components/customervehicles.js
 import React, { useEffect, useState } from 'react';
 import { auth, database } from '../firebase';
 import { ref, onValue, set } from 'firebase/database';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Vehicles = () => {
+const CustomerVehicles = () => {
     const [vehicles, setVehicles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
@@ -135,4 +135,4 @@ const Vehicles = () => {
     );
 };
 
-export default Vehicles;
+export default CustomerVehicles;

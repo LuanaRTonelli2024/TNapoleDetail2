@@ -5,8 +5,10 @@ import logo from '../images/logo.png';
 import AdminCustomers from './admincustomers';
 import AdminEmployees from './adminemployees';
 import AdminTechnicians from './admintechnicians';
-import Booking from './booking';
-import ServiceHistory from './servicehistory';
+import AdminServices from './adminservices';
+import AdminCalendar from './admincalendar';
+import Booking from './customerbooking';
+import ServiceHistory from './customerservicehistory';
 import ChangePassword from './changepassword';
 import './globalstyles.css';
 import './admindashboard.css';
@@ -49,6 +51,12 @@ const AdminDashboard = () => {
                             <Link to="#" onClick={() => handleTabClick('admintechnicians')}>Technicians</Link>
                         </li>
                         <li>
+                            <Link to="#" onClick={() => handleTabClick('adminservices')}>Services</Link>
+                        </li>
+                        <li>
+                            <Link to="#" onClick={() => handleTabClick('admincalendar')}>Calendar</Link>
+                        </li>
+                        <li>
                             <Link to="#" onClick={() => handleTabClick('servicehistory')}>Service History</Link>
                         </li>
                         <li>
@@ -63,6 +71,8 @@ const AdminDashboard = () => {
                         {activeTab === 'admincustomers' && <AdminCustomers />}
                         {activeTab === 'adminemployees' && <AdminEmployees />}
                         {activeTab === 'admintechnicians' && <AdminTechnicians />}
+                        {activeTab === 'adminservices' && <AdminServices />}
+                        {activeTab === 'admincalendar' && <AdminCalendar />}
                         {activeTab === 'servicehistory' && <ServiceHistory />}
                         {activeTab === 'changePassword' && <ChangePassword />}
                     </section>

@@ -1,17 +1,17 @@
-//srvc/components/dashboard.js
+//srvc/components/customerdashboard.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../images/logo.png';
-import Profile from './profile';
-import Vehicles from './vehicles';
-import Booking from './booking'; // Certifique-se de que o caminho está correto
-import ServiceHistory from './servicehistory';
+import Profile from './customerprofile';
+import Vehicles from './customervehicles';
+import Booking from './customerbooking';
+import ServiceHistory from './customerservicehistory';
 import ChangePassword from './changepassword';
 import './globalstyles.css';
-import './dashboard.css';
+import './customerdashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Dashboard = () => {
+const CustomerDashboard = () => {
     const [activeTab, setActiveTab] = useState('');
     const [welcomeVisible, setWelcomeVisible] = useState(true);
 
@@ -70,6 +70,6 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default CustomerDashboard;
  
  

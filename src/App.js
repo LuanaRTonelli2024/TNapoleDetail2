@@ -9,17 +9,18 @@ import AboutUs from "./components/aboutus";
 import ContactUs from "./components/contactus";
 import ResetPassword from "./components/resetpassword";
 import Signup from "./components/signup";
-import Dashboard from "./components/dashboard";
-import Profile from "./components/profile";
-import Vehicles from "./components/vehicles";
-import ServiceHistory from "./components/servicehistory";
-import Booking from "./components/booking";
+import Dashboard from "./components/customerdashboard";
+import Profile from "./components/customerprofile";
+import Vehicles from "./components/customervehicles";
+import ServiceHistory from "./components/customerservicehistory";
+import Booking from "./components/customerbooking";
 import ChangePassword from "./components/changepassword";
-import BookingSettings from "./components/bookingsettings";
 import AdminDashboard from "./components/admindashboard";
 import AdminCustomers from "./components/admincustomers";
 import AdminEmployees from "./components/adminemployees";
 import AdminTechnicians from "./components/admintechnicians";
+import AdminServices from "./components/adminservices";
+import AdminCalendar from "./components/admincalendar";
 import TechnicianDashboard from "./components/techniciandashboard";
 
 const App = () => {
@@ -39,12 +40,13 @@ const App = () => {
         <Route path="/servicehistory" element={<ServiceHistory />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/changepassword" element={<ChangePassword />} />
-        <Route path="/booksettings" element={<BookingSettings />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
         <Route path="/admincustomers" element={<AdminCustomers />} />
         <Route path="/adminemployees" element={<AdminEmployees />} />
         <Route path="/admintechnicians" element={<AdminTechnicians />} />
+        <Route path="/adminservices" element={<AdminServices />} />
         <Route path="/techniciandashboard" element={<TechnicianDashboard />} />
+        <Route path="/admincalendar" element={<AdminCalendar />} />
       </Routes>
     </Router>
   );

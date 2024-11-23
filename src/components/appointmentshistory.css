@@ -1,0 +1,45 @@
+/* src/components/appointmentshistory.css */
+
+.customer-history {
+    padding: 20px;
+}
+
+.appointment-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.appointment-list li {
+    border: 1px solid #ccc;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.appointment-summary {
+    font-weight: bold;
+}
+
+.appointment-details {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+}
+
+.appointment-details p {
+    margin: 5px 0;
+}
+
+.appointment-details input,
+.appointment-details textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.appointment-details button {
+    margin-right: 10px;
+}

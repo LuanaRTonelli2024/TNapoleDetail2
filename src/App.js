@@ -12,6 +12,7 @@ import Signup from "./components/signup";
 import Dashboard from "./components/customerdashboard";
 import Profile from "./components/customerprofile";
 import Vehicles from "./components/customervehicles";
+import AppointmentsHistory from "./components/appointmentshistory";
 import ServiceHistory from "./components/customerservicehistory";
 import Booking from "./components/customerbooking";
 import ChangePassword from "./components/changepassword";
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/vehicles" element={<Vehicles />} />
+        <Route path="/appointments-history" element={<AppointmentsHistory />} />
         <Route path="/servicehistory" element={<ServiceHistory />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/changepassword" element={<ChangePassword />} />

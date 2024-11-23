@@ -5,6 +5,7 @@ import logo from '../images/logo.png';
 import Profile from './customerprofile';
 import Vehicles from './customervehicles';
 import Booking from './customerbooking';
+import AppointmentsHistory from './appointmentshistory';
 import ServiceHistory from './customerservicehistory';
 import ChangePassword from './changepassword';
 import './globalstyles.css';
@@ -45,6 +46,9 @@ const CustomerDashboard = () => {
                             <Link to="#" onClick={() => handleTabClick('vehicles')}>Vehicles</Link>
                         </li>
                         <li>
+                            <Link to="#" onClick={() => handleTabClick('appointmentshistory')}>Appointments History</Link>
+                        </li>
+                        <li>
                             <Link to="#" onClick={() => handleTabClick('servicehistory')}>Service History</Link>
                         </li>
                         <li>
@@ -58,6 +62,7 @@ const CustomerDashboard = () => {
                         {activeTab === '' && <Booking />} {/* Renderiza Booking na home */}
                         {activeTab === 'profile' && <Profile />}
                         {activeTab === 'vehicles' && <Vehicles />}
+                        {activeTab === 'appointmentshistory' && <AppointmentsHistory />}
                         {activeTab === 'servicehistory' && <ServiceHistory />}
                         {activeTab === 'changePassword' && <ChangePassword />}
                     </section>

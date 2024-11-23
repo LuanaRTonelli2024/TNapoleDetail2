@@ -212,14 +212,19 @@ const CustomerBooking = () => {
     };
 
     const sendEmails = (user, date, time, service, vehicle) => {
+        // Verificar os dados do usuário
+        const userEmail = user.email; // E-mail do cliente
+        const customerName = user.displayName || userEmail; // Nome do cliente
+    
         // E-mail para o Cliente
         emailjs.send('service_stfa96j', 'template_uzwwc2q', {
-            customer_name: user.displayName || user.email,
-            customer_email: user.email,
-            service,
-            date,
-            time,
-            vehicle,
+            to_email: userEmail,
+            customer_name: customerName, // Nome do cliente
+            customer_email: userEmail, // E-mail do cliente
+            service: service,  // Serviço agendado
+            date: date, // Data do agendamento
+            time: time, // Hora do agendamento
+            vehicle: vehicle, // Veículo escolhido
         }, 'ixtxPs4UqcvUWMvu5')
             .then((response) => {
                 console.log('Email para o cliente enviado!', response.status, response.text);
@@ -227,14 +232,20 @@ const CustomerBooking = () => {
             .catch((error) => {
                 console.error('Erro ao enviar o e-mail para o cliente:', error);
             });
-
+    
+        // Verificar e-mail do Técnico
+        const technicianEmail = 'luana_tonelli@hotmail.com';
+        const technicianName = 'Fellipe Napole'; // Defina o e-mail correto ou busque no banco de dados
+    
         // E-mail para o Técnico
         emailjs.send('service_stfa96j', 'template_uzwwc2q', {
-            technician_email: 'luana_tonelli@hotmail.com',  // E-mail do técnico
-            service,
-            date,
-            time,
-            vehicle,
+            to_email: technicianEmail,
+            customer_name: technicianName, // Nome do cliente
+            customer_email: technicianEmail, // E-mail do cliente
+            service: service,  // Serviço agendado
+            date: date, // Data do agendamento
+            time: time, // Hora do agendamento
+            vehicle: vehicle, // Veículo escolhido
         }, 'ixtxPs4UqcvUWMvu5')
             .then((response) => {
                 console.log('Email para o técnico enviado!', response.status, response.text);
@@ -242,15 +253,20 @@ const CustomerBooking = () => {
             .catch((error) => {
                 console.error('Erro ao enviar o e-mail para o técnico:', error);
             });
-
+    
+        // Verificar e-mail do Administrador
+        const adminEmail = 'luanartonelli@gmail.com'; // E-mail do administrador
+        const adminName = 'Luana Tonelli';
+    
         // E-mail para o Administrador
         emailjs.send('service_stfa96j', 'template_uzwwc2q', {
-            admin_email: 'luanartonelli@gmail.com',  // E-mail do administrador
-            service,
-            date,
-            time,
-            vehicle,
-            customer_email: user.email,
+            to_email: adminEmail,
+            customer_name: adminName, // Nome do cliente
+            customer_email: adminEmail, // E-mail do cliente
+            service: service,  // Serviço agendado
+            date: date, // Data do agendamento
+            time: time, // Hora do agendamento
+            vehicle: vehicle, // Veículo escolhido
         }, 'ixtxPs4UqcvUWMvu5')
             .then((response) => {
                 console.log('Email para o administrador enviado!', response.status, response.text);
@@ -259,6 +275,7 @@ const CustomerBooking = () => {
                 console.error('Erro ao enviar o e-mail para o administrador:', error);
             });
     };
+    
 
     const tileClassName = ({ date }) => {
         const selectedDay = date.toISOString().split('T')[0];

@@ -10,9 +10,6 @@ import './signup.css';
 
 const Signup = () => {
     const [fullName, setFullName] = useState('');
-    const [address, setAddress] = useState('');
-    const [postalCode, setPostalCode] = useState('');
-    const [city, setCity] = useState('');
     const [phone, setPhone] = useState('');
     const [mobile, setMobile] = useState('');
     const [email, setEmail] = useState('');
@@ -30,9 +27,6 @@ const Signup = () => {
 
             await set(ref(database, 'customers/' + user.uid), {
                 name: fullName,
-                address,
-                postalCode,
-                city,
                 phone,
                 mobile,
                 email,
@@ -72,30 +66,6 @@ const Signup = () => {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder="Full Name"
-                    required
-                    className="form-input"
-                />
-                <input
-                    type="text"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    placeholder="Address"
-                    required
-                    className="form-input"
-                />
-                <input
-                    type="text"
-                    value={postalCode}
-                    onChange={(e) => setPostalCode(e.target.value)}
-                    placeholder="Postal Code (CEP)"
-                    required
-                    className="form-input"
-                />
-                <input
-                    type="text"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    placeholder="City"
                     required
                     className="form-input"
                 />

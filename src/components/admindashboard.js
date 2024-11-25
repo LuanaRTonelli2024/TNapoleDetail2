@@ -12,7 +12,7 @@ import ServiceHistory from './customerservicehistory';
 import ChangePassword from './changepassword';
 import './globalstyles.css';
 import './admindashboard.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('');

@@ -1,7 +1,7 @@
 //src/App.js
 import React from "react";
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from "./components/login";
 import Homepage from "./components/homepage";
 import OurServices from "./components/ourservices";
@@ -23,6 +23,7 @@ import AdminTechnicians from "./components/admintechnicians";
 import AdminServices from "./components/adminservices";
 import AdminCalendar from "./components/admincalendar";
 import TechnicianDashboard from "./components/techniciandashboard";
+import TechnicianConfirmService from "./components/technicianConfirmService";
 
 const App = () => {
   return (
@@ -48,6 +49,7 @@ const App = () => {
         <Route path="/admintechnicians" element={<AdminTechnicians />} />
         <Route path="/adminservices" element={<AdminServices />} />
         <Route path="/techniciandashboard" element={<TechnicianDashboard />} />
+        <Route path="/technicianconfirmservice" element={<TechnicianConfirmService />} />
         <Route path="/admincalendar" element={<AdminCalendar />} />
       </Routes>
     </Router>

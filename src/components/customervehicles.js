@@ -1,138 +1,251 @@
 //src/components/customervehicles.js
 import React, { useEffect, useState } from 'react';
 import { auth, database } from '../firebase';
-import { ref, onValue, set } from 'firebase/database';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { getDatabase, ref, onValue, set, update, remove } from 'firebase/database';
+import './customervehicles.css';
 
 const CustomerVehicles = () => {
     const [vehicles, setVehicles] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [showForm, setShowForm] = useState(false);
-    const [newVehicle, setNewVehicle] = useState({
-        name: '',
-        brand: '',
-        model: '',
-        year: '',
-        color: ''
-    });
+    const [nickName, setNickName] = useState('');
+    const [branch, setBranch] = useState('');
+    const [model, setModel] = useState('');
+    const [year, setYear] = useState('');
+    const [color, setColor] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
+    const [isAdding, setIsAdding] = useState(false);
+    const [selectedVehicleId, setSelectedVehicleId] = useState(null);
+
+    const database = getDatabase();
 
     useEffect(() => {
         const user = auth.currentUser;
         if (user) {
-            const vehiclesRef = ref(database, 'vehicles/' + user.uid);
-            onValue(vehiclesRef, (snapshot) => {
+            const vehicleRef = ref(database, `customers/${user.uid}/vehicles/`);
+            const unsubscribe = onValue(vehicleRef, (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
-                    setVehicles(Object.values(data));
+                    const vehiclesArray = Object.keys(data).map(key => ({
+                        id: key,
+                        nickName: data[key].nickName,
+                        branch: data[key].branch,
+                        model: data[key].model,
+                        year: data[key].year,
+                        color: data[key].color,
+                    }));
+                    setVehicles(vehiclesArray);
+                } else {
+                    console.log("No vehicles found.");
                 }
-                setLoading(false);
             });
-        } else {
-            setLoading(false); // User not logged in
+
+            return () => unsubscribe();
         }
-    }, []);
+    }, [database]);
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setNewVehicle({ ...newVehicle, [name]: value });
+    const handleDelete = (vehicleId) => {
+        const vehicleRef = ref(database, `customers/${auth.currentUser.uid}/vehicles/${vehicleId}`);
+        remove(vehicleRef);
     };
 
-    const handleSubmit = async (e) => {
+    const handleEditVehicle = async (vehicleId) => {
+        if (!vehicleId) return;
+
+        try {
+            const vehicleRef = ref(database, `customers/${auth.currentUser.uid}/vehicles/${vehicleId}`);
+            await update(vehicleRef, {
+                nickName,
+                branch,
+                model,
+                year,
+                color,
+            });
+            resetForm();
+        } catch (error) {
+            console.error('Error editing vehicle:', error);
+        }
+    };
+
+    const handleAddVehicle = async (e) => {
         e.preventDefault();
-        const user = auth.currentUser;
-        const newVehicleRef = ref(database, `vehicles/${user.uid}/${newVehicle.name}`);
-        await set(newVehicleRef, newVehicle);
-        setNewVehicle({ name: '', brand: '', model: '', year: '', color: '' });
-        setShowForm(false);
+
+        try {
+            const user = auth.currentUser;
+            if (user) {
+                const uid = user.uid;
+                await set(ref(database, `customers/${uid}/vehicles/${Date.now()}`), {
+                    nickName,
+                    branch,
+                    model,
+                    year,
+                    color,
+                });
+                resetForm();
+            } else {
+                console.log("No user logged in.");
+            }
+        } catch (error) {
+            console.error('Error adding vehicle:', error);
+        }
     };
 
-    if (loading) {
-        return <p>Loading...</p>;
-    }
+    const resetForm = () => {
+        setNickName('');
+        setBranch('');
+        setModel('');
+        setYear('');
+        setColor('');
+        setSelectedVehicleId(null);
+        setIsEditing(false);
+        setIsAdding(true);
+    };
+
+    const handleStartEditing = (vehicle) => {
+        setSelectedVehicleId(vehicle.id);
+        setNickName(vehicle.nickName);
+        setBranch(vehicle.branch);
+        setModel(vehicle.model);
+        setYear(vehicle.year);
+        setColor(vehicle.color);
+        setIsEditing(true);
+    };
+
+    const toggleVehicleDetails = (vehicleId) => {
+        if (selectedVehicleId === vehicleId) {
+            setSelectedVehicleId(null);
+        } else {
+            setSelectedVehicleId(vehicleId);
+        }
+        setIsEditing(false);
+    };
 
     return (
         <div>
-            <h2>Your Vehicles</h2>
-            <div className="vehicles-container d-flex flex-wrap">
-                {/* Always show the New Vehicle card */}
-                <div className="card m-2" style={{ width: '18rem', cursor: 'pointer' }} onClick={() => setShowForm(true)}>
-                    <div className="card-body">
-                        <h5 className="card-title">New Vehicle</h5>
-                    </div>
-                </div>
-                
+            <h2>Vehicles Management</h2>
+            <button onClick={() => { setIsAdding(true); resetForm(); }} className="btn btn-add">New Vehicle</button>
 
-                {/* Show existing vehicles if any */}
-                {vehicles.map((vehicle, index) => (
-                    <div key={index} className="card m-2" style={{ width: '18rem' }}>
-                        <div className="card-body">
-                            <h5 className="card-title">{vehicle.name}</h5>
-                            <h6 className="card-subtitle mb-2 text-body-secondary">{vehicle.brand} {vehicle.model}</h6>
-                            <p className="card-text">
-                                Year: {vehicle.year} <br />
-                                Color: {vehicle.color}
-                            </p>
-                            <a href="#" className="card-link">View Details</a>
-                            <a href="#" className="card-link">Edit</a>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-            {/* Render the form if showForm is true */}
-            {showForm && (
-                <form onSubmit={handleSubmit} className="mt-4">
-                    <h3>Add New Vehicle</h3>
-                    <input
-                        type="text"
-                        name="name"
-                        placeholder="Vehicle Name"
-                        value={newVehicle.name}
-                        onChange={handleInputChange}
+            {isAdding && (
+                <form onSubmit={handleAddVehicle}>
+                    <input 
+                        type="text" 
+                        placeholder="Nick Name"
+                        value={nickName}
+                        onChange={(e) => setNickName(e.target.value)}
                         required
-                        className="form-control mb-2"
                     />
-                    <input
-                        type="text"
-                        name="brand"
-                        placeholder="Brand"
-                        value={newVehicle.brand}
-                        onChange={handleInputChange}
+                    <input 
+                        type="text" 
+                        placeholder="Branch"
+                        value={branch}
+                        onChange={(e) => setBranch(e.target.value)}
                         required
-                        className="form-control mb-2"
                     />
-                    <input
-                        type="text"
-                        name="model"
+                    <input 
+                        type="text" 
                         placeholder="Model"
-                        value={newVehicle.model}
-                        onChange={handleInputChange}
+                        value={model}
+                        onChange={(e) => setModel(e.target.value)}
                         required
-                        className="form-control mb-2"
                     />
-                    <input
-                        type="number"
-                        name="year"
+                    <input 
+                        type="text" 
                         placeholder="Year"
-                        value={newVehicle.year}
-                        onChange={handleInputChange}
+                        value={year}
+                        onChange={(e) => setYear(e.target.value)}
                         required
-                        className="form-control mb-2"
                     />
-                    <input
-                        type="text"
-                        name="color"
+                    <input 
+                        type="text" 
                         placeholder="Color"
-                        value={newVehicle.color}
-                        onChange={handleInputChange}
+                        value={color}
+                        onChange={(e) => setColor(e.target.value)}
                         required
-                        className="form-control mb-2"
                     />
-                    <button type="submit" className="btn btn-primary">Add Vehicle</button>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                        <button type="submit" className="btn btn-save">Add Vehicle</button>
+                        <button type="button" onClick={() => { resetForm(); setIsAdding(false); }} className="btn btn-cancel">Cancel</button>
+                    </div>
                 </form>
             )}
+
+        <ul className="vehicle-list">
+            {vehicles.map((vehicle) => (
+                <li key={vehicle.id}>
+                    <div 
+                        style={{ cursor: 'pointer' }} 
+                        onClick={() => toggleVehicleDetails(vehicle.id)}
+                    >
+                        {vehicle.nickName}
+                    </div>
+                    {selectedVehicleId === vehicle.id && (
+                        <div className="vehicle-details">
+                            <p>
+                                <strong>Nick Name:</strong> {vehicle.nickName}
+                            </p>
+                            <p>
+                                <strong>Branch:</strong> 
+                                {isEditing ? (
+                                    <input
+                                        type="text"
+                                        value={branch}
+                                        onChange={(e) => setBranch(e.target.value)}
+                                    />
+                                ) : (
+                                    vehicle.branch
+                                )}
+                            </p>
+                            <p>
+                                <strong>Model:</strong> 
+                                {isEditing ? (
+                                    <input
+                                        type="text"
+                                        value={model}
+                                        onChange={(e) => setModel(e.target.value)}
+                                    />
+                                ) : (
+                                    vehicle.model
+                                )}
+                            </p>
+                            <p>
+                                <strong>Year:</strong> 
+                                {isEditing ? (
+                                    <input
+                                        type="text"
+                                        value={year}
+                                        onChange={(e) => setYear(e.target.value)}
+                                    />
+                                ) : (
+                                    vehicle.year
+                                )}  
+                            </p>
+                            <p>
+                                <strong>Color:</strong> 
+                                {isEditing ? (
+                                    <input
+                                        type="text"
+                                        value={color}
+                                        onChange={(e) => setColor(e.target.value)}
+                                    />
+                                ) : (
+                                    vehicle.color
+                                )}
+                            </p>
+                            {isEditing ? (
+                                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                                    <button onClick={() => handleEditVehicle(selectedVehicleId)} className="btn btn-save">Save</button>
+                                    <button onClick={resetForm} className="btn btn-cancel">Cancel</button>
+                                </div>
+                            ) : (
+                                <button onClick={() => handleStartEditing(vehicle)} className="btn btn-edit">Edit</button>
+                            )}
+                            <button onClick={() => handleDelete(vehicle.id)} className="btn btn-danger">Delete</button>
+                        </div>
+                    )}
+                </li>
+            ))}
+        </ul>
         </div>
     );
 };
 
 export default CustomerVehicles;
+  

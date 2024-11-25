@@ -4,11 +4,12 @@ import { Link } from 'react-router-dom';
 import logo from '../images/logo.png';
 import AdminCustomers from './admincustomers';
 import Booking from './customerbooking';
+import TechnicianConfirmService from './technicianConfirmService';
 import ServiceHistory from './customerservicehistory';
 import ChangePassword from './changepassword';
 import './globalstyles.css';
 import './techniciandashboard.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 
 const TechnicianDashboard = () => {
     const [activeTab, setActiveTab] = useState('');
@@ -41,6 +42,9 @@ const TechnicianDashboard = () => {
                             <Link to="#" onClick={() => handleTabClick('admincustomers')}>Customers</Link>
                         </li>
                         <li>
+                            <Link to="#" onClick={() => handleTabClick('confirmService')}>Confirm Service</Link>
+                        </li>
+                        <li>
                             <Link to="#" onClick={() => handleTabClick('servicehistory')}>Service History</Link>
                         </li>
                         <li>
@@ -53,6 +57,7 @@ const TechnicianDashboard = () => {
                         {welcomeVisible && <h2>Welcome, [User's Name]</h2>}
                         {activeTab === 'booking' && <Booking />}
                         {activeTab === 'admincustomers' && <AdminCustomers />}
+                        {activeTab === 'confirmService' && <TechnicianConfirmService />}
                         {activeTab === 'servicehistory' && <ServiceHistory />}
                         {activeTab === 'changePassword' && <ChangePassword />}
                     </section>
@@ -66,5 +71,6 @@ const TechnicianDashboard = () => {
 };
 
 export default TechnicianDashboard;
+    
  
  

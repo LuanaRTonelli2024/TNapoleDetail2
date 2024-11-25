@@ -1,0 +1,48 @@
+.appointment-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.appointment-list li {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px 0;
+    background-color: #f8f9fa;
+    transition: background-color 0.3s;
+}
+
+.appointment-list li:hover {
+    background-color: #e9ecef;
+}
+
+.appointment-details {
+    margin-top: 10px;
+}
+
+.confirm-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.confirm-button:hover {
+    background-color: #218838;
+}
+
+.cancel-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cancel-button:hover {
+    background-color: #007bff;
+}

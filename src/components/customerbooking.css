@@ -4,6 +4,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    
 }
 
 .calendar-time-container {
@@ -38,4 +42,24 @@
 
 .time-button:hover {
     opacity: 0.8;
+}
+
+.dropdown-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap; /* Allows wrapping if the screen is smaller */
+}
+
+.service-selection, .vehicle-selection, .address-selection {
+    width: 30%; /* Adjust width as needed */
+    min-width: 200px; /* Ensures they are not too small */
+}
+
+/* Dropdown styling */
+select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    font-size: 14px;
 }

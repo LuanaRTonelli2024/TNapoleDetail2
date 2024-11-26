@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../images/logo.png';
 import AdminCustomers from './admincustomers';
-import Booking from './customerbooking';
-import TechnicianConfirmService from './technicianConfirmService';
+import TechnicianConfirmService from './technicianconfirmservice';
 import ServiceHistory from './customerservicehistory';
 import ChangePassword from './changepassword';
 import './globalstyles.css';
@@ -55,7 +54,6 @@ const TechnicianDashboard = () => {
                 <main className='main-content'>
                     <section className='booking-section'>
                         {welcomeVisible && <h2>Welcome, [User's Name]</h2>}
-                        {activeTab === 'booking' && <Booking />}
                         {activeTab === 'admincustomers' && <AdminCustomers />}
                         {activeTab === 'confirmService' && <TechnicianConfirmService />}
                         {activeTab === 'servicehistory' && <ServiceHistory />}

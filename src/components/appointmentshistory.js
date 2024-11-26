@@ -76,7 +76,7 @@ const AppointmentsHistory = () => {
 
     return (
         <div>
-            <h2>Service History</h2>
+            <h2>Appointments List</h2>
             <ul className="appointment-list">
                 {appointments.map((appointment) => (
                     <li key={appointment.id}>

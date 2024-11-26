@@ -22,8 +22,10 @@ import AdminEmployees from "./components/adminemployees";
 import AdminTechnicians from "./components/admintechnicians";
 import AdminServices from "./components/adminservices";
 import AdminCalendar from "./components/admincalendar";
+import AdminAppointments from "./components/adminappointments";
 import TechnicianDashboard from "./components/techniciandashboard";
-import TechnicianConfirmService from "./components/technicianConfirmService";
+import TechnicianConfirmService from "./components/technicianconfirmservice";
+import PaymentLink from "./components/paymentlink";
 
 const App = () => {
   return (
@@ -48,9 +50,11 @@ const App = () => {
         <Route path="/adminemployees" element={<AdminEmployees />} />
         <Route path="/admintechnicians" element={<AdminTechnicians />} />
         <Route path="/adminservices" element={<AdminServices />} />
+        <Route path="/adminappointments" element={<AdminAppointments />} />
         <Route path="/techniciandashboard" element={<TechnicianDashboard />} />
         <Route path="/technicianconfirmservice" element={<TechnicianConfirmService />} />
         <Route path="/admincalendar" element={<AdminCalendar />} />
+        <Route path="/paymentlink" element={<PaymentLink />} />
       </Routes>
     </Router>
   );

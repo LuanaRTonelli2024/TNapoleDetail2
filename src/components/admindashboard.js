@@ -7,6 +7,7 @@ import AdminEmployees from './adminemployees';
 import AdminTechnicians from './admintechnicians';
 import AdminServices from './adminservices';
 import AdminCalendar from './admincalendar';
+import AdminAppointments from './adminappointments';
 import Booking from './customerbooking';
 import ServiceHistory from './customerservicehistory';
 import ChangePassword from './changepassword';
@@ -57,7 +58,7 @@ const AdminDashboard = () => {
                             <Link to="#" onClick={() => handleTabClick('admincalendar')}>Calendar</Link>
                         </li>
                         <li>
-                            <Link to="#" onClick={() => handleTabClick('servicehistory')}>Service History</Link>
+                            <Link to="#" onClick={() => handleTabClick('adminappointments')}>Appointments</Link>
                         </li>
                         <li>
                             <Link to="#" onClick={() => handleTabClick('changePassword')}>Change Password</Link>
@@ -73,6 +74,7 @@ const AdminDashboard = () => {
                         {activeTab === 'admintechnicians' && <AdminTechnicians />}
                         {activeTab === 'adminservices' && <AdminServices />}
                         {activeTab === 'admincalendar' && <AdminCalendar />}
+                        {activeTab === 'adminappointments' && <AdminAppointments />}
                         {activeTab === 'servicehistory' && <ServiceHistory />}
                         {activeTab === 'changePassword' && <ChangePassword />}
                     </section>

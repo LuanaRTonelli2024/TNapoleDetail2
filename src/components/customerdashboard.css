@@ -7,7 +7,6 @@
     font-family: Arial, sans-serif; /* Adiciona uma fonte mais moderna */
 }
 
-
 .user-avatar img {
     height: 40px; /* Ajuste a altura conforme necessário */
     border-radius: 50%; /* Torna o avatar redondo */
@@ -26,7 +25,6 @@
     color: white;
     height: auto;
     padding: 20px;
- 
 }
 
 .sidebar ul {
@@ -58,11 +56,9 @@
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra interna sutil */
     border-radius: 8px; /* Bordas arredondadas para um visual mais suave */
     overflow-y: auto; /* Permite rolagem vertical */
-    
 }
 
 .welcome-section h2 {
-   
     font-size: 2rem;
     margin: 0 0 20px 0; /* Margem abaixo do título */
     color: #1c1b1b; /* Cor do título */
@@ -76,4 +72,63 @@ footer {
     position: relative; /* Adiciona um pouco de contexto para o rodapé */
     bottom: 0; /* Garante que o rodapé fique no final */
     width: 100%; /* Faz o rodapé ocupar toda a largura */
+}
+
+/* Estilos para a seção de próximos agendamentos */
+.appointments-board {
+    margin-top: 20px;
+    background-color: #f9f9f9; /* Fundo claro para destacar */
+    border: 1px solid #ddd; /* Borda sutil */
+    border-radius: 8px; /* Bordas arredondadas */
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra leve */
+}
+
+.appointments-board h3 {
+    margin: 0 0 15px 0; /* Margem abaixo do título */
+    font-size: 1.5rem;
+    color: #333; /* Título escuro */
+}
+
+.appointments-board ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.appointment-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd; /* Divisão entre os itens */
+}
+
+.appointment-item:last-child {
+    border-bottom: none; /* Remove a borda do último item */
+}
+
+.appointment-item p {
+    margin: 5px 0;
+    font-size: 0.9rem; /* Texto menor para informações */
+    color: #555; /* Cor neutra */
+}
+
+.appointment-item strong {
+    color: #333; /* Destaque para os rótulos */
+}
+
+/* Estilo para o botão "Schedule an Appointment" */
+.btn-schedule-appointment {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #d3a42e; /* Cor principal do botão */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 15px;
+}
+
+.btn-schedule-appointment:hover {
+    background-color: #b58922; /* Cor mais escura ao passar o mouse */
 }

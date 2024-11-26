@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import { auth, database } from '../firebase';
 import { ref, set, onValue } from 'firebase/database';
-import emailjs from 'emailjs-com';  // Importar EmailJS
+import emailjs from 'emailjs-com';
 import 'react-calendar/dist/Calendar.css';
 import './customerbooking.css';
 
@@ -22,9 +22,13 @@ const CustomerBooking = () => {
     const [businessHours, setBusinessHours] = useState({});
     const [vehicles, setVehicles] = useState([]);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
+    const [addresses, setAddresses] = useState([]);
+    const [selectedAddress, setSelectedAddress] = useState('');
+    const [technician, setTechnician] = useState('');
+    const [status, setStatus] = useState('Pending');
 
     useEffect(() => {
-        const user = auth.currentUser;
+        const user = auth.currentUser ;
         if (user) {
             const appointmentsRef = ref(database, `appointments/${user.uid}`);
             onValue(appointmentsRef, (snapshot) => {
@@ -33,7 +37,6 @@ const CustomerBooking = () => {
                 setAppointments(appointmentsArray);
             });
 
-            // Fetch booking settings (working days)
             const settingsRef = ref(database, 'bookingSettings/');
             onValue(settingsRef, (snapshot) => {
                 const data = snapshot.val();
@@ -42,7 +45,6 @@ const CustomerBooking = () => {
                 }
             });
 
-            // Fetch services and their durations
             const servicesRef = ref(database, 'services/');
             onValue(servicesRef, (snapshot) => {
                 const data = snapshot.val();
@@ -55,7 +57,6 @@ const CustomerBooking = () => {
                 setServiceDurations(durations);
             });
 
-            // Fetch business hours
             const businessHoursRef = ref(database, 'businessHours/');
             onValue(businessHoursRef, (snapshot) => {
                 const data = snapshot.val();
@@ -66,12 +67,24 @@ const CustomerBooking = () => {
                 }
             });
 
-            // Fetch vehicles
-            const vehiclesRef = ref(database, `vehicles/${user.uid}`);
+            const vehiclesRef = ref(database, `customers/${user.uid}/vehicles`);
             onValue(vehiclesRef, (snapshot) => {
                 const data = snapshot.val();
-                const vehiclesArray = data ? Object.values(data) : [];
-                setVehicles(vehiclesArray);
+                if (data) {
+                    const vehiclesArray = Object.values(data);
+                    setVehicles(vehiclesArray);
+                } else {
+                    setVehicles([]);
+                }
+            });
+
+            const customerRef = ref(database, `customers/${user.uid}/addresses`);
+            onValue(customerRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    const addressArray = Object.values(data);
+                    setAddresses(addressArray);
+                }
             });
         }
     }, []);
@@ -80,10 +93,9 @@ const CustomerBooking = () => {
         setDate(newDate);
         setTime('');
         setError('');
-
         const selectedDay = newDate.toLocaleString('en-us', { weekday: 'long' });
         const alreadyBooked = appointments.some(appointment =>
-            appointment.date.split('T')[0] === selectedDay
+            appointment.date && appointment.date.split('T')[0] === newDate.toISOString().split('T')[0]
         );
 
         if (alreadyBooked) {
@@ -95,24 +107,35 @@ const CustomerBooking = () => {
     };
 
     const getAvailableTimes = (date, selectedDay) => {
-        const businessDay = businessHours[selectedDay];
+        if (!businessHours || !selectedDay) {
+            setError('Business hours are not available.');
+            return [];
+        }
 
-        if (!businessDay || businessDay.isClosed) {
+        const businessDay = businessHours[selectedDay] || { isClosed: true };
+
+        if (businessDay.isClosed || !businessDay.open || !businessDay.close ) {
             setError('The business is closed on this day.');
             return [];
         }
 
         const startTime = businessDay.open;
         const endTime = businessDay.close;
+        const serviceDuration = serviceDurations[selectedService] || 0;
 
-        const availableSlots = generateTimeSlots(startTime, endTime, serviceDurations[selectedService]);
+        if (!serviceDuration) {
+            setError('Please select a service to view available times.');
+            return [];
+        }
 
+        const availableSlots = generateTimeSlots(startTime, endTime, serviceDuration);
         const formattedDate = date.toISOString().split('T')[0];
         const occupiedTimes = appointments
-            .filter(appointment => appointment.date.split('T')[0] === formattedDate)
+            .filter(appointment => appointment.date && appointment.date.split('T')[0] === formattedDate)
             .map(appointment => appointment.time);
 
         const availableTimes = availableSlots.filter(slot => !occupiedTimes.includes(slot));
+        setError('');
         return availableTimes;
     };
 
@@ -139,6 +162,21 @@ const CustomerBooking = () => {
         return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
     };
 
+    const tileClassName = ({ date }) => {
+        const dayOfWeek = date.toLocaleString('en-us', { weekday: 'long' });
+        const isWorkingDay = workingDays.includes(dayOfWeek);
+        const alreadyBooked = appointments.some(appointment =>
+            appointment.date && appointment.date.split('T')[0] === date.toISOString().split('T')[0]
+        );
+
+        if (isWorkingDay && !alreadyBooked) {
+            return 'react-calendar__month-view__days__day--available';
+        } else if (alreadyBooked) {
+            return 'react-calendar__month-view__days__day--not-available';
+        }
+        return '';
+    };
+
     const handleTimeSelect = (timeOption) => {
         setTime(timeOption);
         setError('');
@@ -156,43 +194,69 @@ const CustomerBooking = () => {
         setError('');
     };
 
-    const isValidAppointment = () => {
-        const selectedDay = date.toLocaleString('en-us', { weekday: 'long' });
-        const isWorkingDay = workingDays.includes(selectedDay);
-        const isTimeValid = availableTimes.includes(time);
-        const alreadyBooked = appointments.some(appointment =>
-            appointment.date.split('T')[0] === selectedDay && appointment.time === time
-        );
+    const handleAddressSelect = (event) => {
+        setSelectedAddress(event.target.value);
+        setError('');
+    };
 
-        if (!isWorkingDay) {
-            setError('The company operates only on selected working days.');
-            return false;
-        }
-        if (!isTimeValid) {
-            setError('Please select a valid time based on the available times.');
-            return false;
-        }
-        if (alreadyBooked) {
-            setError('This time is already booked.');
-            return false;
-        }
-        if (!selectedVehicle) {
-            setError('Please select a vehicle.');
-            return false;
-        }
-        return true;
+    const sendEmails = (user, date, time, service, vehicle) => {
+        const userEmail = user.email;
+        const customerName = user.displayName || userEmail;
+
+        console.log('Sending email to:', userEmail);
+        console.log('Email data:', {
+            to_email: userEmail,
+            customer_name: customerName,
+            service: service,
+            date: date,
+            time: time,
+            vehicle: vehicle,
+        });
+
+        emailjs.send('service_stfa96j', 'template_uzwwc2q', {
+            to_email: userEmail,
+            customer_name: customerName,
+            customer_email: userEmail,
+            service: service,
+            date: date,
+            time: time,
+            vehicle: vehicle,
+        }, 'ixtxPs4UqcvUWMvu5')
+        .then((response) => {
+            console.log('Email para o cliente enviado!', response.status, response.text);
+        })
+        .catch((error) => {
+            console.error('Erro ao enviar o e-mail para o cliente:', error);
+        });
+
+        const adminEmail = 'luanartonelli@gmail.com';
+        const adminName = 'Luana Tonelli';
+
+        emailjs.send('service_stfa96j', 'template_uzwwc2q', {
+            to_email: adminEmail,
+            customer_name: adminName,
+            customer_email: adminEmail,
+            service: service,
+            date: date,
+            time: time,
+            vehicle: vehicle,
+        }, 'ixtxPs4UqcvUWMvu5')
+        .then((response) => {
+            console.log('Email para o administrador enviado!', response.status, response.text);
+        })
+        .catch((error) => {
+            console.error('Erro ao enviar o e-mail para o administrador:', error);
+        });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        const user = auth.currentUser;
+        const user = auth.currentUser ;
 
-        if (user && isValidAppointment()) {
-            // Gerar o campo Number (ano, mês, dia, hora)
+        if (user) {
             const formattedDate = date.toISOString();
-            const yearMonthDayHour = formattedDate.substring(0, 13).replace(/[-T:]/g, ''); // Exemplo: 2024110909 (2024-11-09 09:00)
-            
+            const yearMonthDayHour = formattedDate.substring(0, 13).replace(/[-T:]/g, '');
             const appointmentKey = `${yearMonthDayHour}-${selectedService}`;
             const appointmentRef = ref(database, `appointments/${user.uid}/${appointmentKey}`);
             await set(appointmentRef, { 
@@ -200,10 +264,13 @@ const CustomerBooking = () => {
                 time,
                 service: selectedService,
                 vehicle: selectedVehicle,
+                address: selectedAddress,
+                technician,
+                status,
                 Number: yearMonthDayHour
             });
 
-            // Enviar e-mails
+            // Enviar e-mails após agendar
             sendEmails(user, formattedDate, time, selectedService, selectedVehicle);
 
             setShowConfirmation(true);
@@ -211,115 +278,46 @@ const CustomerBooking = () => {
         setLoading(false);
     };
 
-    const sendEmails = (user, date, time, service, vehicle) => {
-        // Verificar os dados do usuário
-        const userEmail = user.email; // E-mail do cliente
-        const customerName = user.displayName || userEmail; // Nome do cliente
-    
-        // E-mail para o Cliente
-        emailjs.send('service_stfa96j', 'template_uzwwc2q', {
-            to_email: userEmail,
-            customer_name: customerName, // Nome do cliente
-            customer_email: userEmail, // E-mail do cliente
-            service: service,  // Serviço agendado
-            date: date, // Data do agendamento
-            time: time, // Hora do agendamento
-            vehicle: vehicle, // Veículo escolhido
-        }, 'ixtxPs4UqcvUWMvu5')
-            .then((response) => {
-                console.log('Email para o cliente enviado!', response.status, response.text);
-            })
-            .catch((error) => {
-                console.error('Erro ao enviar o e-mail para o cliente:', error);
-            });
-    
-        // Verificar e-mail do Técnico
-        const technicianEmail = 'luana_tonelli@hotmail.com';
-        const technicianName = 'Fellipe Napole'; // Defina o e-mail correto ou busque no banco de dados
-    
-        // E-mail para o Técnico
-        emailjs.send('service_stfa96j', 'template_uzwwc2q', {
-            to_email: technicianEmail,
-            customer_name: technicianName, // Nome do cliente
-            customer_email: technicianEmail, // E-mail do cliente
-            service: service,  // Serviço agendado
-            date: date, // Data do agendamento
-            time: time, // Hora do agendamento
-            vehicle: vehicle, // Veículo escolhido
-        }, 'ixtxPs4UqcvUWMvu5')
-            .then((response) => {
-                console.log('Email para o técnico enviado!', response.status, response.text);
-            })
-            .catch((error) => {
-                console.error('Erro ao enviar o e-mail para o técnico:', error);
-            });
-    
-        // Verificar e-mail do Administrador
-        const adminEmail = 'luanartonelli@gmail.com'; // E-mail do administrador
-        const adminName = 'Luana Tonelli';
-    
-        // E-mail para o Administrador
-        emailjs.send('service_stfa96j', 'template_uzwwc2q', {
-            to_email: adminEmail,
-            customer_name: adminName, // Nome do cliente
-            customer_email: adminEmail, // E-mail do cliente
-            service: service,  // Serviço agendado
-            date: date, // Data do agendamento
-            time: time, // Hora do agendamento
-            vehicle: vehicle, // Veículo escolhido
-        }, 'ixtxPs4UqcvUWMvu5')
-            .then((response) => {
-                console.log('Email para o administrador enviado!', response.status, response.text);
-            })
-            .catch((error) => {
-                console.error('Erro ao enviar o e-mail para o administrador:', error);
-            });
-    };
-    
-
-    const tileClassName = ({ date }) => {
-        const selectedDay = date.toISOString().split('T')[0];
-        const isWorkingDay = workingDays.includes(selectedDay);
-        const alreadyBooked = appointments.some(appointment =>
-            appointment.date.split('T')[0] === selectedDay
-        );
-
-        if (isWorkingDay && !alreadyBooked) {
-            return 'react-calendar__month-view__days__day--available';
-        } else if (alreadyBooked) {
-            return 'react-calendar__month-view__days__day--not-available';
-        }
-        return '';
-    };
-
     return (
         <div className="booking-container">
             <h2>Schedule an Appointment</h2>
 
-            {/* Dropdown para selecionar o serviço */}
-            <div className="service-selection">
-                <h3>Select Service</h3>
-                <select onChange={handleServiceSelect} value={selectedService}>
-                    <option value="">Select a Service</option>
-                    {services.map(service => (
-                        <option key={service.serviceName} value={service.serviceName}>
-                            {service.serviceName}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            <div className="dropdown-container">
+                <div className="service-selection">
+                    <h3>Select Service</h3>
+                    <select onChange={handleServiceSelect} value={selectedService}>
+                        <option value="">Select a Service</option>
+                        {services.map(service => (
+                            <option key={service.serviceName} value={service.serviceName}>
+                                {service.serviceName}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-            {/* Dropdown para selecionar o veículo */}
-            <div className="vehicle-selection">
-                <h3>Select Vehicle</h3>
-                <select onChange={handleVehicleSelect} value={selectedVehicle}>
-                    <option value="">Select a Vehicle</option>
-                    {vehicles.map(vehicle => (
-                        <option key={vehicle.name} value={vehicle.name}>
-                            {vehicle.name} ({vehicle.model} - {vehicle.year})
-                        </option>
-                    ))}
-                </select>
+                <div className="vehicle-selection">
+                    <h3>Select Vehicle</h3>
+                    <select onChange={handleVehicleSelect} value={selectedVehicle}>
+                        <option value="">Select a Vehicle</option>
+                        {vehicles.map((vehicle, index) => (
+                            <option key={index} value={vehicle.nickName}>
+                                {vehicle.nickName} ({vehicle.model} - {vehicle.color})
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="address-selection">
+                    <h3>Select Address</h3>
+                    <select onChange={handleAddressSelect} value={selectedAddress}>
+                        <option value="">Select an Address</option>
+                        {addresses.map((address, index) => (
+                            <option key={index} value={address.nickName}>
+                                {address.nickName} - {address.city}, {address.postalCode}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </div>
 
             <div className="calendar-time-container">
@@ -327,7 +325,7 @@ const CustomerBooking = () => {
                     onChange={handleDateChange}
                     value={date}
                     tileClassName={tileClassName}
-                    minDate={new Date()} // Impede a seleção de datas passadas
+                    minDate={new Date()}
                 />
                 <div className="time-selection">
                     <h3>Available Times</h3>
@@ -346,7 +344,7 @@ const CustomerBooking = () => {
             </div>
 
             <form onSubmit={handleSubmit}>
-                <button type="submit" disabled={loading || !time || !selectedService || !selectedVehicle}>
+                <button type="submit" disabled={loading || !time || !selectedService || !selectedVehicle || !selectedAddress}>
                     {loading ? 'Scheduling...' : 'Schedule Appointment'}
                 </button>
             </form>
@@ -358,4 +356,3 @@ const CustomerBooking = () => {
 };
 
 export default CustomerBooking;
- 

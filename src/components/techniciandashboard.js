@@ -44,9 +44,6 @@ const TechnicianDashboard = () => {
                             <Link to="#" onClick={() => handleTabClick('confirmService')}>Confirm Service</Link>
                         </li>
                         <li>
-                            <Link to="#" onClick={() => handleTabClick('servicehistory')}>Service History</Link>
-                        </li>
-                        <li>
                             <Link to="#" onClick={() => handleTabClick('changePassword')}>Change Password</Link>
                         </li>
                     </ul>
@@ -56,7 +53,6 @@ const TechnicianDashboard = () => {
                         {welcomeVisible && <h2>Welcome, [User's Name]</h2>}
                         {activeTab === 'admincustomers' && <AdminCustomers />}
                         {activeTab === 'confirmService' && <TechnicianConfirmService />}
-                        {activeTab === 'servicehistory' && <ServiceHistory />}
                         {activeTab === 'changePassword' && <ChangePassword />}
                     </section>
                 </main>

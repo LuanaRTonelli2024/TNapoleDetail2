@@ -101,9 +101,6 @@ const CustomerDashboard = () => {
                             <Link to="#" onClick={() => handleTabClick('appointmentshistory')}>Appointments History</Link>
                         </li>
                         <li>
-                            <Link to="#" onClick={() => handleTabClick('servicehistory')}>Service History</Link>
-                        </li>
-                        <li>
                             <Link to="#" onClick={() => handleTabClick('changePassword')}>Change Password</Link>
                         </li>
                     </ul>
@@ -148,7 +145,6 @@ const CustomerDashboard = () => {
                         {activeTab === 'profile' && <Profile />}
                         {activeTab === 'vehicles' && <Vehicles />}
                         {activeTab === 'appointmentshistory' && <AppointmentsHistory />}
-                        {activeTab === 'servicehistory' && <ServiceHistory />}
                         {activeTab === 'changePassword' && <ChangePassword />}
                     </section>
                 </main>

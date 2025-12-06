@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+TNapole Detail Car (React Project)
+---
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Overview**
 
-## Available Scripts
+The TNapole Detail Car project is a web application created for a car detailing business in Montreal.
+Its purpose is to provide an online platform where customers can explore services, check availability, and book appointments, while administrators and technicians manage schedules, customers, and service execution.
 
-In the project directory, you can run:
+**Expected Benefits**
 
-### `npm start`
+- Improve customer experience with online booking and service visibility
+- Streamline administrative tasks (employee, technician, and customer management)
+- Provide technicians with clear appointment details and payment links
+- Enhance business efficiency and professionalism through a modern web presence
+  
+    **Features**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+	**Customers**
+- View services, prices, and company information
+- Register, login, and manage profile/vehicles
+- Book or cancel services with email confirmation
+- Access service history
+- Receive payment links for online transactions
+  
+	**Administrative Area**
+- Secure login and password management
+- Manage employees, technicians, and customers (add/edit/block)
+- Configure calendar and availability
+- Manage appointments (add, edit, cancel, assign technicians)
+  
+	**Detail Technicians**
+- Secure login and password management
+- Receive email notifications for bookings/cancellations
+- Confirm service execution
+- Send payment links to customers
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+**Tech Stack**
+- Frontend: React
+- Backend: Node.js / Express
+- Database: (e.g., Firebase, MongoDB, or SQL depending on implementation)
+- Version Control: GitHub
 
-### `npm test`
+**Installation & Usage**
+- Clone this repository:
+git clone https://github.com/LuanarTonelli2024/TNapoleDetail2.git
+- Navigate to the project folder:
+cd TNapoleDetail2
+- Install dependencies:
+npm install
+- Run the project locally:
+npm start
+- Access the app at http://localhost:3000
+  
+**Iterations**
+- First Iteration: Customer registration, login, booking, profile, vehicles, availability, and admin agenda configuration.
+- Second Iteration: Password reset/logoff, employee & technician management, appointment handling, cancellation emails.
+- Third Iteration: Service history, payment links, customer management, technician confirmations.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**References**
+- React official documentation: https://react.dev
+- Node.js official docs: https://nodejs.org
